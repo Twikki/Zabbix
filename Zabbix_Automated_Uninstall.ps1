@@ -14,7 +14,7 @@ Write-Host zabbix_agentd has been stopped
 # Attempts to uninstall the Zabbix agent on the Windows machine
 C:\Zabbix\zabbix_agentd.exe --uninstall
 
-WRite-Host zabbix_agentd h as been uninstalled
+WRite-Host zabbix_agentd has been uninstalled
 
 # Cleans up in C:\
 Remove-Item C:\Zabbix -Force -Recurse
