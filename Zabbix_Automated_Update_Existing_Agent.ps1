@@ -67,5 +67,3 @@ C:\Zabbix\zabbix_agentd.exe --config C:\Zabbix\zabbix_agentd.win.conf --install
 
 # Attempts to start the agent
 C:\Zabbix\zabbix_agentd.exe --start
-
-pause
