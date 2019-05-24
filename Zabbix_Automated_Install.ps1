@@ -1,9 +1,9 @@
 # Install Zabbix agent on Windows
-# Tested on Windows Server 2016, Virtual Machine
-# Version 1.02
+# Tested on Windows Server 2016, 2019
+# Version 1.03
 # Created by Daniel Jean Schmidt
-# Last updated 28/02/2019
-# Installs Zabbix Agent 4.0.4
+# Last updated 24/05/2019
+# Installs Zabbix Agent 4.2.1
 
 
 #Gets the server host name
@@ -18,8 +18,8 @@ $ServerIP = Read-Host -Prompt 'What is your Zabbix server/proxy IP?'
 mkdir c:\zabbix
 
 
-# Downloads version 4.0.4 from Zabbix.com
-wget "https://www.zabbix.com/downloads/4.0.4/zabbix_agents-4.0.4-win-amd64.zip" -outfile c:\zabbix\zabbix-4.0.4.zip
+# Downloads version 4.2.1 from Zabbix.com
+wget "https://www.zabbix.com/downloads/4.2.1/zabbix_agents-4.2.1-win-amd64.zip" -outfile c:\zabbix\zabbix-4.2.1.zip
 
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 function Unzip
@@ -30,7 +30,7 @@ function Unzip
 }
 
 # Unzipping file to c:\zabbix
-Unzip "c:\Zabbix\zabbix-4.0.4.zip" "c:\zabbix"      
+Unzip "c:\Zabbix\zabbix-4.2.1.zip" "c:\zabbix"      
 
 
 # Sorts files in c:\zabbix
