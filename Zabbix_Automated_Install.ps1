@@ -4,7 +4,7 @@
 # Created by Daniel Jean Schmidt
 # Last updated 24/05/2019
 # Installs Zabbix Agent 4.2.1
-# test
+
 
 #Gets the server host name
 $ServerHostname = "$ENV:COMPUTERNAME"
