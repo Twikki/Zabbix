@@ -1,9 +1,9 @@
 # Install Zabbix agent on Windows
 # Tested on Windows Server 2016, 2019
-# Version 1.03
+# Version 1.04
 # Created by Daniel Jean Schmidt
-# Last updated 24/05/2019
-# Installs Zabbix Agent 4.2.1
+# Last updated 21/06/2019
+# Installs Zabbix Agent 4.2.3
 
 
 #Gets the server host name
@@ -18,8 +18,8 @@ $ServerIP = Read-Host -Prompt 'What is your Zabbix server/proxy IP?'
 mkdir c:\zabbix
 
 
-# Downloads version 4.2.1 from Zabbix.com
-wget "https://www.zabbix.com/downloads/4.2.1/zabbix_agents-4.2.1-win-amd64.zip" -outfile c:\zabbix\zabbix-4.2.1.zip
+# Downloads version 4.2.3 from Zabbix.com
+wget "https://www.zabbix.com/downloads/4.2.3/zabbix_agents-4.2.3-win-amd64.zip" -outfile c:\zabbix\zabbix-4.2.3.zip
 
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 function Unzip
@@ -30,7 +30,7 @@ function Unzip
 }
 
 # Unzipping file to c:\zabbix
-Unzip "c:\Zabbix\zabbix-4.2.1.zip" "c:\zabbix"      
+Unzip "c:\Zabbix\zabbix-4.2.3.zip" "c:\zabbix"      
 
 
 # Sorts files in c:\zabbix
@@ -38,16 +38,16 @@ Move-Item c:\zabbix\bin\zabbix_agentd.exe -Destination c:\zabbix
 
 
 # Sorts files in c:\zabbix
-Move-Item c:\zabbix\conf\zabbix_agentd.win.conf -Destination c:\zabbix
+Move-Item c:\zabbix\conf\zabbix_agentd.conf -Destination c:\zabbix
 
 # Replaces 127.0.0.1 with your Zabbix server IP in the config file
-(Get-Content -Path c:\zabbix\zabbix_agentd.win.conf) | ForEach-Object {$_ -Replace '127.0.0.1', "$ServerIP"} | Set-Content -Path c:\zabbix\zabbix_agentd.win.conf
+(Get-Content -Path c:\zabbix\zabbix_agentd.conf) | ForEach-Object {$_ -Replace '127.0.0.1', "$ServerIP"} | Set-Content -Path c:\zabbix\zabbix_agentd.conf
 
 # Replaces hostname in the config file
-(Get-Content -Path c:\zabbix\zabbix_agentd.win.conf) | ForEach-Object {$_ -Replace 'Windows host', "$ServerHostname"} | Set-Content -Path c:\zabbix\zabbix_agentd.win.conf
+(Get-Content -Path c:\zabbix\zabbix_agentd.conf) | ForEach-Object {$_ -Replace 'Windows host', "$ServerHostname"} | Set-Content -Path c:\zabbix\zabbix_agentd.conf
 
 # Attempts to install the agent with the config in c:\zabbix
-c:\zabbix\zabbix_agentd.exe --config c:\zabbix\zabbix_agentd.win.conf --install
+c:\zabbix\zabbix_agentd.exe --config c:\zabbix\zabbix_agentd.conf --install
 
 # Attempts to start the agent
 c:\zabbix\zabbix_agentd.exe --start
