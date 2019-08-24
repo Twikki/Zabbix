@@ -1,7 +1,7 @@
 # Uninstall Zabbix agent on Windows
 # Tested on Windows Server 2016, Virtual Machine
 # Version 1.01
-# Created by Daniel Jean Schmidt
+# Created by Twikki
 # Last updated 28/02/2019
 # Installs Zabbix Agent 4.0.4
 
