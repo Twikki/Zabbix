@@ -1,7 +1,7 @@
 # Install Zabbix agent on Windows
 # Tested on Windows Server 2016, 2019
 # Version 1.05
-# Created by Daniel Jean Schmidt
+# Created by Twikki
 # Last updated 14/08/2019
 # Installs Zabbix Agent 4.2.5
 
