@@ -87,13 +87,11 @@ Function ZabbixInstall
     #Places the config file in c:\zabbix
     Set-Content -Path 'C:\zabbix\zabbix_agentd.win.conf' -Value $configfileagent
 
-
     # Downloads the latest metadata file from Github.com
     $configfilemetadata = Invoke-RestMethod https://api.github.com/repos/YourCompanyHere/YourRepoHere/contents/zabbix_agentd.metadata.conf?access_token=YourAccessTokenHere -Headers @{”Accept”= “application/vnd.github.v3.raw”}
 
     # Places the metadata file in c:\zabbix
     Set-Content -Path 'C:\zabbix\conf\zabbix_agentd.metadata.conf' -Value $configfilemetadata
-
 
     # Downloads the latest userparam file from Github.com
     $configfileuserparam = Invoke-RestMethod https://api.github.com/repos/YourCompanyHere/YourRepoHere/contents/zabbix_agentd.userparams.conf?access_token=YourAccessTokenHere -Headers @{”Accept”= “application/vnd.github.v3.raw”}
@@ -107,4 +105,145 @@ Function ZabbixInstall
     # Attempts to start the agent
     c:\zabbix\zabbix_agentd.exe --start
 
+}
+
+Function ZabbixUninstall
+{
+
+    # Attempts to stop the Zabbix service on the Windows machine
+    c:\zabbix\zabbix_agentd.exe --stop
+
+    # Attempts to uninstall the Zabbix agent on the Windows machine
+    c:\zabbix\zabbix_agentd.exe --uninstall
+    
+    # Cleans up in c:\
+    Remove-Item c:\zabbix -Force -Recurse
+
+    # Cleans up logs in c:\
+    Remove-Item c:\zabbix_agentd.log
+
+}
+
+# Function that Maintains Zabbix configuration files
+Function ZabbixMaintain
+# Function open
+{                                          
+
+
+# Makes a directory for temporary files
+mkdir c:\zabbix\maintain
+
+
+# Checks if zabbix_agentd.win.conf file exists on the server. If yes, it pulls the latest version from Github
+$ChkFile = "C:\Zabbix\zabbix_agentd.win.conf"
+$FileExists = Test-Path $ChkFile
+If ($FileExists -eq $True) {
+
+    $configfileagent = Invoke-RestMethod https://api.github.com/repos/YourCompanyHere/YourRepoHere/contents/zabbix_agentd.win.conf?access_token=YourAccessTokenHere -Headers @{”Accept”= “application/vnd.github.v3.raw”}
+
+    Set-Content -Path 'C:\zabbix\maintain\zabbix_agentd.win.conf' -Value $configfileagent
+
+    # compares the file downloaded from Github with the existing file on the server. And replaces it if there is a content difference
+    if(Compare-Object -ReferenceObject $(Get-Content C:\zabbix\maintain\zabbix_agentd.win.conf) -DifferenceObject $(Get-Content c:\zabbix\zabbix_agentd.win.conf))
+
+ {Move-Item "C:\zabbix\maintain\zabbix_agentd.win.conf" "C:\zabbix\zabbix_agentd.win.conf" -Force
+
+ $counter++
+
+}
+}
+
+# Checks if Zabbix_Agentd.userparams.conf file exists on the server. If yes, it pulls the latest version from Github
+$ChkFile = "C:\Zabbix\conf\zabbix_agentd.userparams.conf"
+$FileExists = Test-Path $ChkFile
+If ($FileExists -eq $True) {
+
+    $configfileagent = Invoke-RestMethod https://api.github.com/repos/YourCompanyHere/YourRepoHere/contents/zabbix_agentd.userparams.conf?access_token=YourAccessTokenHere -Headers @{”Accept”= “application/vnd.github.v3.raw”}
+
+    Set-Content -Path 'C:\zabbix\maintain\zabbix_agentd.userparams.conf' -Value $configfileagent
+
+    # compares the file downloaded from Github with the existing file on the server. And replaces it if there is a content difference
+    if(Compare-Object -ReferenceObject $(Get-Content C:\zabbix\maintain\zabbix_agentd.userparams.conf) -DifferenceObject $(Get-Content c:\zabbix\conf\zabbix_agentd.userparams.conf))
+
+ {Move-Item "C:\zabbix\maintain\zabbix_agentd.userparams.conf" "C:\zabbix\conf\zabbix_agentd.userparams.conf" -Force
+
+ $counter++
+
+}
+}
+
+# Checks if zabbix_agentd.metadata.conf file exists on the server. If yes, it pulls the latest version from Github
+$ChkFile = "C:\Zabbix\conf\zabbix_agentd.metadata.conf"
+$FileExists = Test-Path $ChkFile
+If ($FileExists -eq $True) {
+
+    $configfileagent = Invoke-RestMethod https://api.github.com/repos/YourCompanyHere/YourRepoHere/contents/zabbix_agentd.metadata.conf?access_token=YourAccessTokenHere -Headers @{”Accept”= “application/vnd.github.v3.raw”}
+
+    Set-Content -Path 'C:\zabbix\maintain\zabbix_agentd.metadata.conf' -Value $configfileagent
+
+    # compares the file downloaded from Github with the existing file on the server. And replaces it if there is a content difference
+    if(Compare-Object -ReferenceObject $(Get-Content C:\zabbix\maintain\zabbix_agentd.metadata.conf) -DifferenceObject $(Get-Content c:\zabbix\conf\zabbix_agentd.metadata.conf))
+
+ {Move-Item "C:\zabbix\maintain\zabbix_agentd.metadata.conf" "C:\zabbix\conf\zabbix_agentd.metadata.conf" -Force
+
+ $counter++
+
+}
+}
+
+# This will restart the agent if counter is equal to 1 or above
+If ($counter -ge 1) 
+
+    {
+
+    Write-Host $Counter "Files has been updated! Restarting agent..."
+    # Attempts to stop the agent
+    c:\zabbix\zabbix_agentd.exe --stop
+    
+    # Attempts to start the agent
+    c:\zabbix\zabbix_agentd.exe --start
+    
+    }
+    
+    # Cleans up old files
+    Remove-Item C:\zabbix\maintain -Force -Recurse
+
+
+# Function closing
+}
+
+
+#
+# Installation script starts here
+#
+
+# Checks if the Zabbix folder exists.
+$ChkFile = "C:\Zabbix\"
+$FileExists = Test-Path $ChkFile
+If ($FileExists -eq $True) 
+
+{
+
+    # Gets the version that is currently installed on the server, and then determine what to do.
+    $currentagentversion = (Get-Item C:\Zabbix\zabbix_agentd.exe).VersionInfo.ProductVersion
+
+    # If versions match, do this.
+    If ($currentagentversion -eq $newestagentversion)
+    {
+        Write-Host "Detected that Zabbix agent Version is the same, updating configuration files!"
+        ZabbixMaintain
+    }
+    else
+    {
+        Write-Host "Detected that Zabbix agent version is NOT the same, updating agent to newest version!" $newestagentversion
+        ZabbixBackup
+        ZabbixUninstall
+        ZabbixInstall    
+    }
+
+}
+else
+{
+    Write-Host "Detected that Zabbix agent is not installed on this Windows machine. Installing agent version!" $newestagentversion
+    ZabbixInstall    
 }
