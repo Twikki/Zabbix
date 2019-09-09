@@ -17,6 +17,9 @@ $InstalledPowershell = $PSVersionTable.PSVersion.Major
 $counter = 0
 $ZabbixBackupFolderPath = "C:\zabbixbackup\"
 $ZabbixFolderPath = "C:\Zabbix\"
+$AccessToken = ?
+$CompanyName = ?
+$RepoName = ?
 
 # Checks Powershell version before executing anything, Exits if lower than version 5.
 If ($InstalledPowershell -lt $RequredPowershell)
@@ -82,19 +85,19 @@ Function ZabbixInstall
     Remove-Item C:\zabbix\conf\zabbix_agentd.conf
 
     # Downloads the latest configuration file from Github.com
-    $configfileagent = Invoke-RestMethod https://api.github.com/repos/YourCompanyHere/YourRepoHere/contents/zabbix_agentd.win.conf?access_token=YourAccessTokenHere -Headers @{”Accept”= “application/vnd.github.v3.raw”}
+    $configfileagent = Invoke-RestMethod https://api.github.com/repos/$CompanyName/$RepoName/contents/zabbix_agentd.win.conf?access_token=$AccessToken -Headers @{”Accept”= “application/vnd.github.v3.raw”}
 
     #Places the config file in c:\zabbix
     Set-Content -Path 'C:\zabbix\zabbix_agentd.win.conf' -Value $configfileagent
 
     # Downloads the latest metadata file from Github.com
-    $configfilemetadata = Invoke-RestMethod https://api.github.com/repos/YourCompanyHere/YourRepoHere/contents/zabbix_agentd.metadata.conf?access_token=YourAccessTokenHere -Headers @{”Accept”= “application/vnd.github.v3.raw”}
+    $configfilemetadata = Invoke-RestMethod https://api.github.com/repos/$CompanyName/$RepoName/contents/zabbix_agentd.metadata.conf?access_token=$AccessToken -Headers @{”Accept”= “application/vnd.github.v3.raw”}
 
     # Places the metadata file in c:\zabbix
     Set-Content -Path 'C:\zabbix\conf\zabbix_agentd.metadata.conf' -Value $configfilemetadata
 
     # Downloads the latest userparam file from Github.com
-    $configfileuserparam = Invoke-RestMethod https://api.github.com/repos/YourCompanyHere/YourRepoHere/contents/zabbix_agentd.userparams.conf?access_token=YourAccessTokenHere -Headers @{”Accept”= “application/vnd.github.v3.raw”}
+    $configfileuserparam = Invoke-RestMethod https://api.github.com/repos/$CompanyName/$RepoName/contents/zabbix_agentd.userparams.conf?access_token=$AccessToken -Headers @{”Accept”= “application/vnd.github.v3.raw”}
 
     # Places the userparam file in c:\zabbix
     Set-Content -Path 'C:\zabbix\conf\zabbix_agentd.userparams.conf' -Value $configfileuserparam
@@ -139,7 +142,7 @@ $ChkFile = "C:\Zabbix\zabbix_agentd.win.conf"
 $FileExists = Test-Path $ChkFile
 If ($FileExists -eq $True) {
 
-    $configfileagent = Invoke-RestMethod https://api.github.com/repos/YourCompanyHere/YourRepoHere/contents/zabbix_agentd.win.conf?access_token=YourAccessTokenHere -Headers @{”Accept”= “application/vnd.github.v3.raw”}
+    $configfileagent = Invoke-RestMethod https://api.github.com/repos/$CompanyName/$RepoName/contents/zabbix_agentd.win.conf?access_token=$AccessToken -Headers @{”Accept”= “application/vnd.github.v3.raw”}
 
     Set-Content -Path 'C:\zabbix\maintain\zabbix_agentd.win.conf' -Value $configfileagent
 
@@ -158,7 +161,7 @@ $ChkFile = "C:\Zabbix\conf\zabbix_agentd.userparams.conf"
 $FileExists = Test-Path $ChkFile
 If ($FileExists -eq $True) {
 
-    $configfileagent = Invoke-RestMethod https://api.github.com/repos/YourCompanyHere/YourRepoHere/contents/zabbix_agentd.userparams.conf?access_token=YourAccessTokenHere -Headers @{”Accept”= “application/vnd.github.v3.raw”}
+    $configfileagent = Invoke-RestMethod https://api.github.com/repos/$CompanyName/$RepoName/contents/zabbix_agentd.userparams.conf?access_token=$AccessToken -Headers @{”Accept”= “application/vnd.github.v3.raw”}
 
     Set-Content -Path 'C:\zabbix\maintain\zabbix_agentd.userparams.conf' -Value $configfileagent
 
@@ -177,7 +180,7 @@ $ChkFile = "C:\Zabbix\conf\zabbix_agentd.metadata.conf"
 $FileExists = Test-Path $ChkFile
 If ($FileExists -eq $True) {
 
-    $configfileagent = Invoke-RestMethod https://api.github.com/repos/YourCompanyHere/YourRepoHere/contents/zabbix_agentd.metadata.conf?access_token=YourAccessTokenHere -Headers @{”Accept”= “application/vnd.github.v3.raw”}
+    $configfileagent = Invoke-RestMethod https://api.github.com/repos/$CompanyName/$RepoName/contents/zabbix_agentd.metadata.conf?access_token=$AccessToken -Headers @{”Accept”= “application/vnd.github.v3.raw”}
 
     Set-Content -Path 'C:\zabbix\maintain\zabbix_agentd.metadata.conf' -Value $configfileagent
 
