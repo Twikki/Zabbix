@@ -17,6 +17,7 @@ $InstalledPowershell = $PSVersionTable.PSVersion.Major
 $counter = 0
 $ZabbixBackupFolderPath = "C:\zabbixbackup\"
 $ZabbixFolderPath = "C:\Zabbix\"
+# Github information
 $AccessToken = ?
 $CompanyName = ?
 $RepoName = ?
