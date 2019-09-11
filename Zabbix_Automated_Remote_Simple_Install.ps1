@@ -5,7 +5,6 @@
 #
 # CSV file must be as following:
 # Name
-# ----
 # ServerNameOne
 # ServerNameTwo
 # ServerNameThree
