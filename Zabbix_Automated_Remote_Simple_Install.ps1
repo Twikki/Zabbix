@@ -2,6 +2,14 @@
 # THIS IS USED FOR PUSHING ZABBIX AGENTS TO REMOTE IP ADDRESSES
 # Installs the Zabbix agent if not installed, maintains the agent if installed, or updates the agent if not up to date.
 # This script will be using private Github repositories for maintaining the files
+#
+# CSV file must be as following:
+# Name
+# ----
+# ServerNameOne
+# ServerNameTwo
+# ServerNameThree
+
 
 
 function Choice1
@@ -40,6 +48,7 @@ Move-Item c:\zabbix\bin\zabbix_agentd.exe -Destination c:\zabbix
 Move-Item c:\zabbix\conf\zabbix_agentd.conf -Destination c:\zabbix
 
 # Replaces 127.0.0.1 with your Zabbix server IP in the config file
+# You need to change the ip address 192.168.5.2 with your own
 (Get-Content -Path c:\zabbix\zabbix_agentd.conf) | ForEach-Object {$_ -Replace '127.0.0.1', "192.168.5.2"} | Set-Content -Path c:\zabbix\zabbix_agentd.conf
 
 # Replaces hostname in the config file
@@ -65,8 +74,8 @@ $Password = Read-Host 'What is your password?'
 $SecurePassword = ConvertTo-SecureString -String $Password -asPlainText -Force
 $Credential = New-Object System.Management.Automation.PSCredential($Username,$SecurePassword)
 
-# Asks the user for CSV file path
-$filepath = Read-Host 'Please enter your filepath for CSV file'
+# Asks the user for CSV file path. Example: C:\Foldername\Filename.csv
+$filepath = Read-Host 'Please enter your filepath for CSV file. Example: C:\Foldername\Filename.csv'
 
 
 $ServerList = Import-CSV $filepath
@@ -75,5 +84,4 @@ ForEach ($Server in $ServerList)
 
 {
     Invoke-Command -ComputerName $Server.Name ` -ScriptBlock ${Function:Choice1} ` -credential $Credential
-
 }
