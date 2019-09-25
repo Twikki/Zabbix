@@ -17,7 +17,7 @@ function Choice1
 
 
 #Gets the server host name
-$ServerHostname = "$ENV:COMPUTERNAME"
+$serverHostname =  Invoke-Command -ScriptBlock {hostname}
 
 
 # Creates Zabbix DIR

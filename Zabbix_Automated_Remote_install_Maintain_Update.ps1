@@ -7,8 +7,8 @@
 
 
 # Username and Password used for Windows Authentication
-$Username = ''
-$Password = ''
+$Username = Read-Host 'What is your domain + Username?'
+$Password = Read-Host 'What is your password?'
 $SecurePassword = ConvertTo-SecureString -String $Password -asPlainText -Force
 $Credential = New-Object System.Management.Automation.PSCredential($Username,$SecurePassword)
 
@@ -76,17 +76,6 @@ New-NetFirewallRule -DisplayName "Allow Zabbix communication" -Direction Inbound
 function Choice2
 
 {
-
-
-$ServerIP
-    
-If (!$ServerIP)
-
-{
-Write-Host "You have not yet defined your Server Proxy IP" -ForegroundColor Cyan -BackgroundColor Black
-# Asks the user for the IP address of their Zabbix server
-$ServerIP = Read-Host -Prompt 'What is your Zabbix server/proxy IP?';
-}
 
 
 
@@ -179,13 +168,29 @@ If ($MenuChoice -eq 1)
 elseif ($MenuChoice -eq 2)
 {
 
+    $ServerIP
+    
+If (!$ServerIP)
+
+    {
+    Write-Host "You have not yet defined your Server Proxy IP" -ForegroundColor Cyan -BackgroundColor Black
+    # Asks the user for the IP address of their Zabbix server
+    $ServerIP = Read-Host -Prompt 'What is your Zabbix server/proxy IP?';
+    }
+
+
+
+
     # Ask the user where the file is
     $IPList = Read-Host -Prompt 'Please Specify where the list is located'
 
     # Runs through the list 
     foreach($line in Get-Content $IPList) {
         if($line -match $regex){
-            Choice2
+            
+        # Installs Zabbix agent on a remote server
+        Invoke-Command -ComputerName $Server$IPList ` -ScriptBlock ${Function:Choice2} ` -credential $Credential
+
         }
     }
 
