@@ -22,7 +22,7 @@ function Choice1
 
 
 #Gets the server host name
-$ServerHostname = "$ENV:COMPUTERNAME"
+$serverHostname =  Invoke-Command -ScriptBlock {hostname}
 
 
 # Asks the user for the IP address of their Zabbix server
@@ -80,7 +80,7 @@ function Choice2
 
 
 #Gets the server host name
-$ServerHostname = "$ENV:COMPUTERNAME"
+$serverHostname =  Invoke-Command -ScriptBlock {hostname}
 
 
 
