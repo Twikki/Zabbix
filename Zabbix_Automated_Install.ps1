@@ -2,7 +2,7 @@
 # Tested on Windows Server 2016, 2019
 # Version 1.06
 # Created by Twikki
-# Last updated 13/09/2019
+# Last updated 11/10/2019
 # Installs Zabbix Agent 4.2.6
 
 
@@ -18,8 +18,8 @@ $ServerIP = Read-Host -Prompt 'What is your Zabbix server/proxy IP?'
 mkdir c:\zabbix
 
 
-# Downloads version 4.2.6 from Zabbix.com
-Invoke-WebRequest "https://www.zabbix.com/downloads/4.2.6/zabbix_agents-4.2.6-win-amd64.zip" -outfile c:\zabbix\zabbix.zip
+# Downloads version 4.2.7 from Zabbix.com
+Invoke-WebRequest "https://www.zabbix.com/downloads/4.2.7/zabbix_agents-4.2.7-win-amd64.zip" -outfile c:\zabbix\zabbix.zip
 
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 function Unzip
