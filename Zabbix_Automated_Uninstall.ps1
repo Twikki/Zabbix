@@ -1,3 +1,7 @@
+#
+# THIS SCRIPT IS READY TO USE
+#
+
 # Uninstall Zabbix agent on Windows
 # Tested on Windows Server 2016, Virtual Machine
 # Version 1.01

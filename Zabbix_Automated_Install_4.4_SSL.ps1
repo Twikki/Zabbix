@@ -1,3 +1,7 @@
+#
+# THIS SCRIPT IS READY TO USE
+#
+
 # Install Zabbix agent 4.4.0 on Windows with SSL
 # Tested on Windows Server 2016, 2019
 # Version 1.00

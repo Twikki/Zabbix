@@ -1,3 +1,7 @@
+#
+# THIS SCRIPT IS READY TO USE
+#
+
 # Short description of script
 # THIS IS USED FOR PUSHING ZABBIX AGENTS TO REMOTE IP ADDRESSES
 # Installs the Zabbix agent if not installed

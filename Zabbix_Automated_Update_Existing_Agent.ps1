@@ -1,10 +1,13 @@
+#
+# THIS SCRIPT IS READY TO USE
+#
+
 # Update Zabbix agent on Windows
 # Tested on Windows Server 2016, Virtual Machine
 # Version 1.01
 # Created by Twikki
 # Last updated 28/02/2019
 # Attempts to install the latest version of Zabbix
-
 
 ### SERVICES
 ############################################################
