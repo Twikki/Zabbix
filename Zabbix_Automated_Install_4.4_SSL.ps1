@@ -2,12 +2,12 @@
 # THIS SCRIPT IS READY TO USE
 #
 
-# Install Zabbix agent 4.4.1 on Windows with SSL
+# Install Zabbix agent 4.4.4 on Windows with SSL
 # Tested on Windows Server 2016, 2019
 # Version 1.00
 # Created by Twikki
-# Last updated 13/11/2019
-# Installs Zabbix Agent 4.4.1
+# Last updated 24/01/2020
+# Installs Zabbix Agent 4.4.4
 
 
 #Gets the server host name
@@ -22,8 +22,8 @@ $ServerIP = Read-Host -Prompt 'What is your Zabbix server/proxy IP?'
 mkdir c:\zabbix
 
 
-# Downloads version 4.4.1 with SSL from Zabbix.com
-Invoke-WebRequest "https://www.zabbix.com/downloads/4.4.1/zabbix_agents-4.4.1-win-amd64-openssl.zip" -outfile c:\zabbix\zabbix.zip
+# Downloads version 4.4.4 with SSL from Zabbix.com
+Invoke-WebRequest "https://www.zabbix.com/downloads/4.4.4/zabbix_agent-4.4.4-windows-amd64-openssl.zip" -outfile c:\zabbix\zabbix.zip
 
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 function Unzip
