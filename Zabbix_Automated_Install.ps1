@@ -4,9 +4,9 @@
 
 # Install Zabbix agent on Windows
 # Tested on Windows Server 2012, 2012R2, 2016, 2019
-# Version 2.00
+# Version 2.01
 # Created by Twikki
-# Last updated 24/01/2020
+# Last updated 07/02/2020
 # Installs Zabbix Agent optionals version
 
 
@@ -14,8 +14,8 @@
 # 
 $version428 = "https://www.zabbix.com/downloads/4.2.8/zabbix_agent-4.2.8-windows-amd64.zip"
 $version428ssl = "https://www.zabbix.com/downloads/4.2.8/zabbix_agent-4.2.8-windows-amd64-openssl.zip"
-$version444 = "https://www.zabbix.com/downloads/4.4.4/zabbix_agent-4.4.4-windows-amd64.zip"
-$version444ssl = "https://www.zabbix.com/downloads/4.4.4/zabbix_agent-4.4.4-windows-amd64-openssl.zip"
+$version445 = "https://www.zabbix.com/downloads/4.4.5/zabbix_agent-4.4.5-windows-amd64.zip"
+$version445ssl = "https://www.zabbix.com/downloads/4.4.5/zabbix_agent-4.4.5-windows-amd64-openssl.zip"
 
 
 
@@ -32,7 +32,7 @@ mkdir c:\zabbix
 
 
 # Downloads the version you want. Links are up. This script currently as standard downloads version 4.4.4 with SSL option
-Invoke-WebRequest "$version444ssl" -outfile c:\zabbix\zabbix.zip
+Invoke-WebRequest "$version445ssl" -outfile c:\zabbix\zabbix.zip
 
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 function Unzip
