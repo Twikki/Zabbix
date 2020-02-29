@@ -1,31 +1,24 @@
-#
-# NOT READY YET
-#
-
-
-# Short description of script
-# THIS IS USED FOR INDIVIDUAL SERVERS!
-# Installs the Zabbix agent if not installed, maintains the agent if installed, or updates the agent if not up to date.
-# This script will be using private Github repositories for maintaining the files
-
-# Powershell sometimes needs to be forced to use TLS 1.2
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
-# Varibles needed throughout the Script
-# Download link for the agent
-$Url = "https://www.zabbix.com/downloads/4.2.6/zabbix_agents-4.2.6-win-amd64.zip"
-$newestagentversion = "4.2.6"
-# Powershell version 5 is required for this to work properly.
+# Zabbix Powershell script that installs the agent, or updates the agent and configuration 
+# Tested on Windows Server 2012, 2012 R2, 2016, 2019
+# Version 1.0
+# Installs Zabbix Agent 4.4.6 with SSL
+
+#
+# Variables
+#
+
+# URL to zabbix agent download.
+$Url = "https://www.zabbix.com/downloads/4.4.6/zabbix_agent-4.4.6-windows-amd64-openssl.zip"
+$GithubToken = "0ed81e208e146652809f9b9e4e8aa1335b26fa51"
+$Githubrepo = "youtubetest"
+$newestagentversion = "4.4.6"
 $RequredPowershell = 5
 $InstalledPowershell = $PSVersionTable.PSVersion.Major
-# The counter is used later to determine if a restart of the agent is needed
 $counter = 0
 $ZabbixBackupFolderPath = "C:\zabbixbackup\"
 $ZabbixFolderPath = "C:\Zabbix\"
-# Github information
-$AccessToken = ?
-$CompanyName = ?
-$RepoName = ?
 
 # Checks Powershell version before executing anything, Exits if lower than version 5.
 If ($InstalledPowershell -lt $RequredPowershell)
@@ -35,11 +28,6 @@ If ($InstalledPowershell -lt $RequredPowershell)
 }
 
 
-####
-#### BUILDING FUNCTIONS HERE
-####
-
-# Function that unzips a file
 function Unzip
 {
     
@@ -48,7 +36,7 @@ function Unzip
     [System.IO.Compression.ZipFile]::ExtractToDirectory($zipfile, $outpath)
 }
 
-# Function that provides backup for Zabbix folder with detailed information
+# Function that provides backup for Zabbix folder
 Function ZabbixBackup
 {
 
@@ -66,6 +54,7 @@ Function ZabbixBackup
 
 }
 
+
 # Function that installs Zabbix agent
 Function ZabbixInstall
 {
@@ -76,7 +65,7 @@ Function ZabbixInstall
     # Creates the scripts folder in the zabbix folder
     mkdir c:\zabbix\scripts
 
-    # Downloads version 4.2.6 from https://www.zabbix.com/download_agents
+    # Downloads version 4.4.6 with SSL from https://www.zabbix.com/download_agents
     Invoke-WebRequest $url -outfile c:\zabbix\zabbix.zip
 
     Add-Type -AssemblyName System.IO.Compression.FileSystem
@@ -84,29 +73,44 @@ Function ZabbixInstall
     # Unzipping file to c:\zabbix
     Unzip "c:\zabbix\zabbix.zip" "c:\zabbix"  
 
-    # Looks like 32 bit has been removed in V. 4.2.6, so it's copying the only Agent file.
+    # 32 bit has been removed in V. 4.4.6, so it's copying the only Agent file.
     Move-Item C:\zabbix\bin\zabbix_agentd.exe -Destination c:\zabbix\
 
     # Removes the original config file
     Remove-Item C:\zabbix\conf\zabbix_agentd.conf
 
     # Downloads the latest configuration file from Github.com
-    $configfileagent = Invoke-RestMethod https://api.github.com/repos/$CompanyName/$RepoName/contents/zabbix_agentd.win.conf?access_token=$AccessToken -Headers @{”Accept”= “application/vnd.github.v3.raw”}
+    $configfileagent = Invoke-RestMethod https://api.github.com/repos/Twikki/$Githubrepo/contents/zabbix_agentd.win.conf?access_token=$GithubToken -Headers @{”Accept”= “application/vnd.github.v3.raw”}
 
     #Places the config file in c:\zabbix
     Set-Content -Path 'C:\zabbix\zabbix_agentd.win.conf' -Value $configfileagent
 
+
     # Downloads the latest metadata file from Github.com
-    $configfilemetadata = Invoke-RestMethod https://api.github.com/repos/$CompanyName/$RepoName/contents/zabbix_agentd.metadata.conf?access_token=$AccessToken -Headers @{”Accept”= “application/vnd.github.v3.raw”}
+    $configfilemetadata = Invoke-RestMethod https://api.github.com/repos/Twikki/$Githubrepo/contents/zabbix_agentd.metadata.conf?access_token=$GithubToken -Headers @{”Accept”= “application/vnd.github.v3.raw”}
 
     # Places the metadata file in c:\zabbix
     Set-Content -Path 'C:\zabbix\conf\zabbix_agentd.metadata.conf' -Value $configfilemetadata
 
+
     # Downloads the latest userparam file from Github.com
-    $configfileuserparam = Invoke-RestMethod https://api.github.com/repos/$CompanyName/$RepoName/contents/zabbix_agentd.userparams.conf?access_token=$AccessToken -Headers @{”Accept”= “application/vnd.github.v3.raw”}
+    $configfileuserparam = Invoke-RestMethod https://api.github.com/repos/Twikki/$Githubrepo/contents/zabbix_agentd.userparams.conf?access_token=$GithubToken -Headers @{”Accept”= “application/vnd.github.v3.raw”}
 
     # Places the userparam file in c:\zabbix
     Set-Content -Path 'C:\zabbix\conf\zabbix_agentd.userparams.conf' -Value $configfileuserparam
+
+    # Downloads the latest show_config_versions.ps1 file from Github.com
+    $configversions = Invoke-RestMethod https://api.github.com/repos/Twikki/$Githubrepo/contents/show_config_versions.ps1?access_token=$GithubToken -Headers @{”Accept”= “application/vnd.github.v3.raw”}
+
+    # Places the show_config_versions.ps1 file in c:\zabbix\scripts
+    Set-Content -Path 'C:\zabbix\scripts\show_config_versions.ps1' -Value $configversions
+
+    # Downloads the latest show_agent_Version.ps1 file from Github.com
+    $agentversion = Invoke-RestMethod https://api.github.com/repos/Twikki/$Githubrepo/contents/show_agent_version.ps1?access_token=$GithubToken -Headers @{”Accept”= “application/vnd.github.v3.raw”}
+
+    # Places the show_agent_version.ps1 file in c:\zabbix\scripts
+    Set-Content -Path 'C:\zabbix\scripts\show_agent_version.ps1' -Value $agentversion
+
 
     # Attempts to install the agent with the config in c:\zabbix
     c:\zabbix\zabbix_agentd.exe --config c:\zabbix\zabbix_agentd.win.conf --install
@@ -116,6 +120,7 @@ Function ZabbixInstall
 
 }
 
+# Function that Uninstalls Zabbix agent
 Function ZabbixUninstall
 {
 
@@ -133,22 +138,21 @@ Function ZabbixUninstall
 
 }
 
+
 # Function that Maintains Zabbix configuration files
 Function ZabbixMaintain
-# Function open
-{                                          
+{ # Open the Zabbix Uninstall function bracket
 
 
 # Makes a directory for temporary files
 mkdir c:\zabbix\maintain
-
 
 # Checks if zabbix_agentd.win.conf file exists on the server. If yes, it pulls the latest version from Github
 $ChkFile = "C:\Zabbix\zabbix_agentd.win.conf"
 $FileExists = Test-Path $ChkFile
 If ($FileExists -eq $True) {
 
-    $configfileagent = Invoke-RestMethod https://api.github.com/repos/$CompanyName/$RepoName/contents/zabbix_agentd.win.conf?access_token=$AccessToken -Headers @{”Accept”= “application/vnd.github.v3.raw”}
+    $configfileagent = Invoke-RestMethod https://api.github.com/repos/Twikki/$Githubrepo/contents/zabbix_agentd.win.conf?access_token=$GithubToken -Headers @{”Accept”= “application/vnd.github.v3.raw”}
 
     Set-Content -Path 'C:\zabbix\maintain\zabbix_agentd.win.conf' -Value $configfileagent
 
@@ -160,14 +164,18 @@ If ($FileExists -eq $True) {
  $counter++
 
 }
+
+
 }
+
+
 
 # Checks if Zabbix_Agentd.userparams.conf file exists on the server. If yes, it pulls the latest version from Github
 $ChkFile = "C:\Zabbix\conf\zabbix_agentd.userparams.conf"
 $FileExists = Test-Path $ChkFile
 If ($FileExists -eq $True) {
 
-    $configfileagent = Invoke-RestMethod https://api.github.com/repos/$CompanyName/$RepoName/contents/zabbix_agentd.userparams.conf?access_token=$AccessToken -Headers @{”Accept”= “application/vnd.github.v3.raw”}
+    $configfileagent = Invoke-RestMethod https://api.github.com/repos/Twikki/$Githubrepo/contents/zabbix_agentd.userparams.conf?access_token=$GithubToken -Headers @{”Accept”= “application/vnd.github.v3.raw”}
 
     Set-Content -Path 'C:\zabbix\maintain\zabbix_agentd.userparams.conf' -Value $configfileagent
 
@@ -179,6 +187,8 @@ If ($FileExists -eq $True) {
  $counter++
 
 }
+
+
 }
 
 # Checks if zabbix_agentd.metadata.conf file exists on the server. If yes, it pulls the latest version from Github
@@ -186,7 +196,7 @@ $ChkFile = "C:\Zabbix\conf\zabbix_agentd.metadata.conf"
 $FileExists = Test-Path $ChkFile
 If ($FileExists -eq $True) {
 
-    $configfileagent = Invoke-RestMethod https://api.github.com/repos/$CompanyName/$RepoName/contents/zabbix_agentd.metadata.conf?access_token=$AccessToken -Headers @{”Accept”= “application/vnd.github.v3.raw”}
+    $configfileagent = Invoke-RestMethod https://api.github.com/repos/Twikki/$Githubrepo/contents/zabbix_agentd.metadata.conf?access_token=$GithubToken -Headers @{”Accept”= “application/vnd.github.v3.raw”}
 
     Set-Content -Path 'C:\zabbix\maintain\zabbix_agentd.metadata.conf' -Value $configfileagent
 
@@ -198,7 +208,76 @@ If ($FileExists -eq $True) {
  $counter++
 
 }
+
+
 }
+
+# Checks if show_config_versions.ps1 file exists on the server. If yes, it pulls the latest version from Github
+$ChkFile = "C:\Zabbix\scripts\show_config_versions.ps1"
+$FileExists = Test-Path $ChkFile
+If ($FileExists -eq $false) 
+{
+
+    # Downloads the latest show_config_versions.ps1 file from Github.com
+    $configversions = Invoke-RestMethod https://api.github.com/repos/Twikki/$Githubrepo/contents/show_config_versions.ps1?access_token=$GithubToken -Headers @{”Accept”= “application/vnd.github.v3.raw”}
+
+    # Places the show_config_versions.ps1 file in c:\zabbix\scripts
+    Set-Content -Path 'C:\zabbix\scripts\show_config_versions.ps1' -Value $configversions
+
+$counter ++
+
+}
+else
+{
+
+    $configfileagent = Invoke-RestMethod https://api.github.com/repos/Twikki/$Githubrepo/contents/show_config_versions.ps1?access_token=$GithubToken -Headers @{”Accept”= “application/vnd.github.v3.raw”}
+
+    Set-Content -Path 'C:\zabbix\maintain\show_config_versions.ps1' -Value $configfileagent
+
+    # compares the file downloaded from Github with the existing file on the server. And replaces it if there is a content difference
+    if(Compare-Object -ReferenceObject $(Get-Content C:\zabbix\maintain\show_config_versions.ps1) -DifferenceObject $(Get-Content c:\zabbix\scripts\show_config_versions.ps1))
+
+ {Move-Item "C:\zabbix\maintain\show_config_versions.ps1" "C:\zabbix\scripts\show_config_versions.ps1" -Force
+
+ $counter++
+
+}
+
+}
+
+# Checks if show_agent_version.ps1 file exists on the server. If yes, it pulls the latest version from Github
+$ChkFile = "C:\Zabbix\scripts\show_agent_version.ps1"
+$FileExists = Test-Path $ChkFile
+If ($FileExists -eq $false) 
+{
+
+    # Downloads the latest show_agent_Version.ps1 file from Github.com
+    $agentversion = Invoke-RestMethod https://api.github.com/repos/Twikki/$Githubrepo/contents/show_agent_version.ps1?access_token=$GithubToken -Headers @{”Accept”= “application/vnd.github.v3.raw”}
+
+    # Places the show_agent_version.ps1 file in c:\zabbix\scripts
+    Set-Content -Path 'C:\zabbix\scripts\show_agent_version.ps1' -Value $agentversion
+
+$counter ++
+
+}
+else
+{
+
+    $configfileagent = Invoke-RestMethod https://api.github.com/repos/Twikki/$Githubrepo/contents/show_agent_version.ps1?access_token=$GithubToken -Headers @{”Accept”= “application/vnd.github.v3.raw”}
+
+    Set-Content -Path 'C:\zabbix\maintain\show_agent_version.ps1' -Value $configfileagent
+
+    # compares the file downloaded from Github with the existing file on the server. And replaces it if there is a content difference
+    if(Compare-Object -ReferenceObject $(Get-Content C:\zabbix\maintain\show_agent_version.ps1) -DifferenceObject $(Get-Content c:\zabbix\scripts\show_agent_version.ps1))
+
+ {Move-Item "C:\zabbix\maintain\show_agent_version.ps1" "C:\zabbix\scripts\show_agent_version.ps1" -Force
+
+$counter ++
+ 
+}
+
+}
+
 
 # This will restart the agent if counter is equal to 1 or above
 If ($counter -ge 1) 
@@ -212,13 +291,16 @@ If ($counter -ge 1)
     # Attempts to start the agent
     c:\zabbix\zabbix_agentd.exe --start
     
+    
     }
     
     # Cleans up old files
     Remove-Item C:\zabbix\maintain -Force -Recurse
 
 
-# Function closing
+
+
+# Closing the Zabbix Uninstall function bracket
 }
 
 
