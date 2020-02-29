@@ -118,6 +118,9 @@ Function ZabbixInstall
     # Attempts to start the agent
     c:\zabbix\zabbix_agentd.exe --start
 
+    # Creates a firewall rule for the Zabbix server
+    New-NetFirewallRule -DisplayName "Allow Zabbix communication" -Direction Inbound -Program "c:\zabbix\zabbix_agentd.exe" -RemoteAddress LocalSubnet -Action Allow
+
 }
 
 # Function that Uninstalls Zabbix agent

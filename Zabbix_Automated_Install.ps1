@@ -45,10 +45,8 @@ function Unzip
 # Unzipping file to c:\zabbix
 Unzip "c:\Zabbix\zabbix.zip" "c:\zabbix"      
 
-
 # Sorts files in c:\zabbix
 Move-Item c:\zabbix\bin\zabbix_agentd.exe -Destination c:\zabbix
-
 
 # Sorts files in c:\zabbix
 Move-Item c:\zabbix\conf\zabbix_agentd.conf -Destination c:\zabbix
