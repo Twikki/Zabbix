@@ -11,7 +11,7 @@
 
 # URL to zabbix agent download.
 $Url = "https://www.zabbix.com/downloads/4.4.6/zabbix_agent-4.4.6-windows-amd64-openssl.zip"
-$GithubToken = "68a9419cf9050cc45b5c9b766da2818090d20a43"
+$GithubToken = "Yourtokenhere"
 $Githubrepo = "youtubetest"
 $newestagentversion = "4.4.6"
 $RequredPowershell = 5
