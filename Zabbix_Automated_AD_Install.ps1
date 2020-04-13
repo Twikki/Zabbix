@@ -27,6 +27,7 @@ $FileExists = Test-Path $ChkFile
 If ($FileExists -eq $True) 
 
 {
+    
 $serverHostname =  Invoke-Command -ScriptBlock {hostname}
 Write-host "Zabbix already exists on " $serverHostname "Checking if version needs update" -ForegroundColor Green
 
@@ -172,8 +173,8 @@ $GetADMachines = Get-ADComputer -properties * -Filter * -SearchBase "OU=WindowsM
 # $Username = admtwikki
 # $Password = xx
 
-$Username = Read-Host 'What is your domain admin login?'
-$Password = Read-Host 'What is your password?'
+$Username = "admtwikki"
+$Password = "Youtube2"
 $SecurePassword = ConvertTo-SecureString -String $Password -asPlainText -Force
 $Credential = New-Object System.Management.Automation.PSCredential($Username,$SecurePassword)
 
