@@ -14,8 +14,8 @@ function InstallZabbixAD
 {
 
 # Zabbix agent version you prefer
-$version446ssl = "https://www.zabbix.com/downloads/4.4.6/zabbix_agent-4.4.6-windows-amd64-openssl.zip"
-$newestagentversion = "4.4.6"
+$versionssl = "https://www.zabbix.com/downloads/4.4.6/zabbix_agent-4.4.6-windows-amd64-openssl.zip"
+$agentversion = "4.4.6"
 $ServerProxyIP = "192.168.5.2"
 
 
@@ -33,7 +33,7 @@ Write-host "Zabbix already exists on " $serverHostname "Checking if version need
 $currentagentversion = (Get-Item C:\Zabbix\zabbix_agentd.exe).VersionInfo.ProductVersion
 
 # If versions match, continue, else remove old version and install new version
-If ($currentagentversion -eq $newestagentversion)
+If ($currentagentversion -eq $agentversion)
     {
         # Zabbix agent installed is the prefered version. Do nothing
         Write-Host "Detected that Zabbix agent Version is the same, continuing to  next host.."
@@ -66,7 +66,7 @@ else
 
     # Downloads version specified above
     $ProgressPreference=’SilentlyContinue’ 
-    Invoke-WebRequest "$version446ssl" -outfile c:\zabbix\zabbix.zip
+    Invoke-WebRequest "$versionssl" -outfile c:\zabbix\zabbix.zip
 
     # Unzip function
     Add-Type -AssemblyName System.IO.Compression.FileSystem
@@ -123,7 +123,7 @@ mkdir c:\zabbix
 
 # Downloads version specified above
 $ProgressPreference=’SilentlyContinue’ 
-Invoke-WebRequest "$version446ssl" -outfile c:\zabbix\zabbix.zip
+Invoke-WebRequest "$versionssl" -outfile c:\zabbix\zabbix.zip
 
 # Unzip function
 Add-Type -AssemblyName System.IO.Compression.FileSystem

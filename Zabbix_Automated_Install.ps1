@@ -12,9 +12,9 @@
 
 # Download links for different versions 
 # 
-$version428 = "https://www.zabbix.com/downloads/4.2.8/zabbix_agent-4.2.8-windows-amd64.zip"
-$version428ssl = "https://www.zabbix.com/downloads/4.2.8/zabbix_agent-4.2.8-windows-amd64-openssl.zip"
-$version446 = "https://www.zabbix.com/downloads/4.4.6/zabbix_agent-4.4.6-windows-amd64.zip"
+#$version428 = "https://www.zabbix.com/downloads/4.2.8/zabbix_agent-4.2.8-windows-amd64.zip"
+#$version428ssl = "https://www.zabbix.com/downloads/4.2.8/zabbix_agent-4.2.8-windows-amd64-openssl.zip"
+#$version446 = "https://www.zabbix.com/downloads/4.4.6/zabbix_agent-4.4.6-windows-amd64.zip"
 $version446ssl = "https://www.zabbix.com/downloads/4.4.6/zabbix_agent-4.4.6-windows-amd64-openssl.zip"
 
 

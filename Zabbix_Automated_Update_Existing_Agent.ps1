@@ -37,7 +37,7 @@ Remove-Item c:\zabbix -Force -Recurse
 mkdir c:\zabbix
 
 # Downloads version 4.0.4 from Zabbix.com to c:\zabbix
-wget "https://www.zabbix.com/downloads/4.0.4/zabbix_agents-4.0.4-win-amd64.zip" -outfile c:\zabbix\zabbix-4.0.4.zip
+Invoke-WebRequest "https://www.zabbix.com/downloads/4.0.4/zabbix_agents-4.0.4-win-amd64.zip" -outfile c:\zabbix\zabbix-4.0.4.zip
 
 # Imports ZIP
 Add-Type -AssemblyName System.IO.Compression.FileSystem
