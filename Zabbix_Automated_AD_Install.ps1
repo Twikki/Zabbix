@@ -1,6 +1,8 @@
 #
 # THIS SCRIPT IS READY TO USE
 #
+# Created by Twikki
+# Last updated 13/04/2020
 
 # Short description of script
 # THIS IS USED FOR PUSHING ZABBIX AGENTS / UPGRADE AGENTS TO AD joined computers / servers
