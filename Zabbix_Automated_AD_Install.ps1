@@ -2,7 +2,7 @@
 # THIS SCRIPT IS READY TO USE
 #
 # Created by Twikki
-# Last updated 13/04/2020
+# Last updated 24/05/2020
 
 # Short description of script
 # THIS IS USED FOR PUSHING ZABBIX AGENTS / UPGRADE AGENTS TO AD joined computers / servers
@@ -14,8 +14,8 @@ function InstallZabbixAD
 {
 
 # Zabbix agent version you prefer
-$versionssl = "https://www.zabbix.com/downloads/4.4.6/zabbix_agent-4.4.6-windows-amd64-openssl.zip"
-$agentversion = "4.4.6"
+$versionssl = "https://www.zabbix.com/downloads/5.0.0/zabbix_agent-5.0.0-windows-amd64-openssl.zip"
+$agentversion = "5.0.0"
 $ServerProxyIP = "192.168.5.2"
 
 

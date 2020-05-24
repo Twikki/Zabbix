@@ -28,8 +28,8 @@ $serverHostname =  Invoke-Command -ScriptBlock {hostname}
 mkdir c:\zabbix
 
 
-# Downloads version 4.2.6 from https://www.zabbix.com/download_agents
-Invoke-WebRequest "https://www.zabbix.com/downloads/4.2.6/zabbix_agents-4.2.6-win-amd64.zip" -outfile c:\zabbix\zabbix.zip
+# Downloads version 5.0.0 from https://www.zabbix.com/download_agents
+Invoke-WebRequest "https://www.zabbix.com/downloads/5.0.0/zabbix_agent-5.0.0-windows-amd64-openssl.zip" -outfile c:\zabbix\zabbix.zip
 
 Add-Type -AssemblyName System.IO.Compression.FileSystem
 function Unzip

@@ -2,8 +2,8 @@
 
 # Zabbix Powershell script that installs the agent, or updates the agent and configuration 
 # Tested on Windows Server 2012, 2012 R2, 2016, 2019
-# Version 1.0
-# Installs Zabbix Agent 4.4.6 with SSL
+# Version 1.1
+# Installs Zabbix Agent 5.0.0 with SSL
 
 #
 # Variables

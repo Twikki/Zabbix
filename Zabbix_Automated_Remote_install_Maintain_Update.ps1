@@ -17,7 +17,7 @@ $Password = Read-Host 'What is your password?'
 $SecurePassword = ConvertTo-SecureString -String $Password -asPlainText -Force
 $Credential = New-Object System.Management.Automation.PSCredential($Username,$SecurePassword)
 
-$Url = "https://www.zabbix.com/downloads/4.2.6/zabbix_agents-4.2.6-win-amd64.zip"
+$Url = "https://www.zabbix.com/downloads/5.0.0/zabbix_agent-5.0.0-windows-amd64-openssl.zip"
 
 
 function Choice1
@@ -38,7 +38,7 @@ $ServerIP = Read-Host -Prompt 'What is your Zabbix server/proxy IP?'
 mkdir c:\zabbix
 
 
-# Downloads version 4.2.6 from https://www.zabbix.com/download_agents
+# Downloads version 5.0.0 from https://www.zabbix.com/download_agents
 Invoke-WebRequest $url -outfile c:\zabbix\zabbix.zip
 
 Add-Type -AssemblyName System.IO.Compression.FileSystem

@@ -6,8 +6,10 @@
 # Tested on Windows Server 2016, Virtual Machine
 # Version 1.01
 # Created by Twikki
-# Last updated 28/02/2019
+# Last updated 24/05/2020
 # Attempts to install the latest version of Zabbix
+
+$version500ssl = "https://www.zabbix.com/downloads/5.0.0/zabbix_agent-5.0.0-windows-amd64-openssl.zip"
 
 ### SERVICES
 ############################################################
@@ -36,8 +38,8 @@ Remove-Item c:\zabbix -Force -Recurse
 # Creates Zabbix folder again
 mkdir c:\zabbix
 
-# Downloads version 4.0.4 from Zabbix.com to c:\zabbix
-Invoke-WebRequest "https://www.zabbix.com/downloads/4.0.4/zabbix_agents-4.0.4-win-amd64.zip" -outfile c:\zabbix\zabbix-4.0.4.zip
+# Downloads version 5.0.0 from Zabbix.com to c:\zabbix
+Invoke-WebRequest "$version500ssl" -outfile c:\zabbix\zabbix.zip
 
 # Imports ZIP
 Add-Type -AssemblyName System.IO.Compression.FileSystem
@@ -49,7 +51,7 @@ function Unzip
 }
 
 # Unzipping file to c:\zabbix
-Unzip "c:\zabbix\zabbix-4.0.4.zip" "c:\zabbix"
+Unzip "c:\Zabbix\zabbix.zip" "c:\zabbix" 
 
 
 # Sorts files in c:\zabbix
