@@ -7,26 +7,20 @@
 # Version 1.00
 # Created by Twikki
 # Last updated 13/01/2021
-# Installs Zabbix Agent V2 optionals version
 
 
 # Download links for different versions 
 # 
 $version523ssl = "https://cdn.zabbix.com/zabbix/binaries/stable/5.2/5.2.3/zabbix_agent2-5.2.3-windows-amd64-openssl-static.zip"
 
-
-
 #Gets the server host name
 $serverHostname =  Invoke-Command -ScriptBlock {hostname}
-
 
 # Asks the user for the IP address of their Zabbix server
 $ServerIP = Read-Host -Prompt 'What is your Zabbix server/proxy IP?'
 
-
 # Creates Zabbix DIR
 mkdir c:\zabbix
-
 
 # Downloads the version you want. Links are up. This script currently as standard downloads version 5.0.0 with SSL option
 Invoke-WebRequest "$version523ssl" -outfile c:\zabbix\zabbix.zip
