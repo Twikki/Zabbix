@@ -11,7 +11,7 @@
 
 # Download links for different versions 
 # 
-$version523ssl = "https://cdn.zabbix.com/zabbix/binaries/stable/5.2/5.2.3/zabbix_agent2-5.2.3-windows-amd64-openssl-static.zip"
+$version523ssl = "https://cdn.zabbix.com/zabbix/binaries/stable/5.4/5.4.2/zabbix_agent2-5.4.2-windows-amd64-openssl-static.zip"
 
 #Gets the server host name
 $serverHostname =  Invoke-Command -ScriptBlock {hostname}
