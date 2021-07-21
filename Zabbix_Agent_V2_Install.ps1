@@ -3,15 +3,16 @@
 #
 
 # Install Zabbix agent V2 on Windows
+# This script is designed for automatic install and maintenance via Endpoint manager
 # Tested on Windows 10
 # Version 1.00
 # Created by Twikki
-# Last updated 13/01/2021
+# Last updated 21/07/2021
 
 
 # Download links for different versions 
 # 
-$version523ssl = "https://cdn.zabbix.com/zabbix/binaries/stable/5.4/5.4.2/zabbix_agent2-5.4.2-windows-amd64-openssl-static.zip"
+$version523ssl = "https://cdn.zabbix.com/zabbix/binaries/stable/5.4/5.4.3/zabbix_agent2-5.4.3-windows-amd64-openssl-static.zip"
 
 #Gets the server host name
 $serverHostname =  Invoke-Command -ScriptBlock {hostname}
