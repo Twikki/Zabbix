@@ -9,22 +9,25 @@
 # Last updated 28/02/2019
 # Installs Zabbix Agent 4.0.4
 
+#Company Variables
+$path = "C:\APPS\ZABBIX\"
+
 
 # Attempts to stop the Zabbix service on the Windows machine
-c:\zabbix\zabbix_agentd.exe --stop
+& $path"zabbix_agentd.exe" --stop
 
 Write-Host zabbix_agentd has been stopped
 
 # Attempts to uninstall the Zabbix agent on the Windows machine
-c:\zabbix\zabbix_agentd.exe --uninstall
+& $path"zabbix_agentd.exe" --uninstall
 
 Write-Host zabbix_agentd has been uninstalled
 
 # Cleans up in c:\
-Remove-Item c:\zabbix -Force -Recurse
+Remove-Item $path -Force -Recurse
 
 # Cleans up logs in c:\
-Remove-Item c:\zabbix_agentd.log
+Remove-Item $path"zabbix_agentd.log"
 
 # Deletes the Zabbix firewall rule
 Remove-NetFirewallRule -DisplayName "Allow Zabbix communication"
